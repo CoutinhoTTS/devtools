@@ -1,0 +1,24 @@
+packages:
+  - 'packages/*'
+  - 'playground'
+catalogs:
+  deps:
+    vue: ^3.5.17
+  dev:
+    '@antfu/nip': ^0.1.0
+    '@types/node': ^24.0.3
+    ansis: ^4.1.0
+    exsolve: ^1.0.7
+    lightningcss: ^1.30.1
+    tinyglobby: ^0.2.14
+    turbo: ^2.5.4
+    typescript: ^5.8.3
+    unocss: ^66.2.3
+    vite: ^6.3.5
+  play:
+    '@vitejs/plugin-vue': ^5.2.4
+    '@vue/tsconfig': ^0.7.0
+    vue-tsc: ^2.2.10
+  client:
+    tsdown: ^0.12.8
+    unplugin-vue: ^6.2.0

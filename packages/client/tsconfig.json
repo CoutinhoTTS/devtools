@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true, 
+    "baseUrl": ".",     
+    "paths": {
+      "@hooks/*": ["../hooks/*"],      
+      "@client/*": ["./*"],
+      "@vite/*": ["../vite/*"]
+    }
+  },
+  "include": ["../../**/*.ts","../../**/*.d.ts","../../**/*.vue"],
+}

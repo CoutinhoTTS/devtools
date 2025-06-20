@@ -1,0 +1,28 @@
+{
+  "name": "devtools",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.6.2",
+  "devDependencies": {
+    "@antfu/nip": "catalog:dev"
+  },
+  "dependencies": {
+    "vue": "catalog:deps",
+    "typescript": "catalog:dev",
+    "@types/node": "catalog:dev",
+    "vite": "catalog:dev",
+    "unocss": "catalog:dev",
+    "turbo": "catalog:dev",
+    "ansis": "catalog:dev",
+    "exsolve": "catalog:dev",
+    "lightningcss": "catalog:dev",
+    "tinyglobby": "catalog:dev"
+  }
+}
