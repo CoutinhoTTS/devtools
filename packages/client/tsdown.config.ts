@@ -7,7 +7,6 @@ export default defineConfig({
   fixedExtension: true,
   alias: {
     "@client/": "./*",
-    "@hooks/": "../hooks/*",
     "@vite/": "../vite/*",
   },
   hooks: {
@@ -23,4 +22,5 @@ export default defineConfig({
   },
   plugins: [Vue()],
   external: ["vue", "@vueuse/core"],
+  dts: true,
 });

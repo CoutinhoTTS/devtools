@@ -4,9 +4,8 @@
     "composite": true, 
     "baseUrl": ".",     
     "paths": {    
-      "@client/*": ["./*"],
-      "@vite/*": ["../vite/*"]
+      "@client/*": ["../vite/*"],
+      "@vite/*": ["./*"]
     }
-  },
-  "include": ["./.generated/*.ts"],
+  }
 }

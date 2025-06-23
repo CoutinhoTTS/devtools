@@ -6,9 +6,9 @@ settings:
 
 catalogs:
   client:
-    tsdown:
-      specifier: ^0.12.8
-      version: 0.12.8
+    '@vueuse/core':
+      specifier: ^13.4.0
+      version: 13.4.0
     unplugin-vue:
       specifier: ^6.2.0
       version: 6.2.0
@@ -23,6 +23,9 @@ catalogs:
     '@types/node':
       specifier: ^24.0.3
       version: 24.0.3
+    '@unocss/reset':
+      specifier: ^66.2.3
+      version: 66.2.3
     ansis:
       specifier: ^4.1.0
       version: 4.1.0
@@ -35,6 +38,9 @@ catalogs:
     tinyglobby:
       specifier: ^0.2.14
       version: 0.2.14
+    tsdown:
+      specifier: ^0.12.8
+      version: 0.12.8
     turbo:
       specifier: ^2.5.4
       version: 2.5.4
@@ -57,6 +63,10 @@ catalogs:
     vue-tsc:
       specifier: ^2.2.10
       version: 2.2.10
+  vite:
+    rollup:
+      specifier: ^4.44.0
+      version: 4.44.0
 
 importers:
 
@@ -65,6 +75,9 @@ importers:
       '@types/node':
         specifier: catalog:dev
         version: 24.0.3
+      '@unocss/reset':
+        specifier: catalog:dev
+        version: 66.2.3
       ansis:
         specifier: catalog:dev
         version: 4.1.0
@@ -77,6 +90,9 @@ importers:
       tinyglobby:
         specifier: catalog:dev
         version: 0.2.14
+      tsdown:
+        specifier: catalog:dev
+        version: 0.12.8(typescript@5.8.3)(vue-tsc@2.2.10(typescript@5.8.3))
       turbo:
         specifier: catalog:dev
         version: 2.5.4
@@ -98,13 +114,23 @@ importers:
         version: 0.1.0
 
   packages/client:
-    devDependencies:
-      tsdown:
+    dependencies:
+      '@vueuse/core':
         specifier: catalog:client
-        version: 0.12.8(typescript@5.8.3)(vue-tsc@2.2.10(typescript@5.8.3))
+        version: 13.4.0(vue@3.5.17(typescript@5.8.3))
+    devDependencies:
       unplugin-vue:
         specifier: catalog:client
         version: 6.2.0(@types/node@24.0.3)(jiti@2.4.2)(lightningcss@1.30.1)(vue@3.5.17(typescript@5.8.3))(yaml@2.8.0)
+
+  packages/vite:
+    dependencies:
+      client:
+        specifier: workspace:^
+        version: link:../client
+      rollup:
+        specifier: catalog:vite
+        version: 4.44.0
 
   playground:
     dependencies:
@@ -114,6 +140,9 @@ importers:
       '@vue/tsconfig':
         specifier: catalog:play
         version: 0.7.0(typescript@5.8.3)(vue@3.5.17(typescript@5.8.3))
+      devtools-vite:
+        specifier: workspace:^
+        version: link:../packages/vite
       vue-tsc:
         specifier: catalog:play
         version: 2.2.10(typescript@5.8.3)
@@ -552,6 +581,9 @@ packages:
   '@types/node@24.0.3':
     resolution: {integrity: sha512-R4I/kzCYAdRLzfiCabn9hxWfbuHS573x+r0dJMkkzThEa7pbrcDWK+9zu3e7aBOouf+rQAciqPFMnxwr0aWgKg==}
 
+  '@types/web-bluetooth@0.0.21':
+    resolution: {integrity: sha512-oIQLCGWtcFZy2JW77j9k8nHzAOpqMHLQejDA48XXMWH6tjCQHz5RCFz1bzsmROyL6PUm+LLnUiI4BCn221inxA==}
+
   '@unocss/astro@66.2.3':
     resolution: {integrity: sha512-tWqQmsdyEV328NhUU1pLkn6SFXeQmDb+EwM7iqDaswmBBwBUGktd3xAFJqO3fBEIhQEmXzj4oHZCIO7GuXcLxA==}
     peerDependencies:
@@ -704,6 +736,19 @@ packages:
         optional: true
       vue:
         optional: true
+
+  '@vueuse/core@13.4.0':
+    resolution: {integrity: sha512-OnK7zW3bTq/QclEk17+vDFN3tuAm8ONb9zQUIHrYQkkFesu3WeGUx/3YzpEp+ly53IfDAT9rsYXgGW6piNZC5w==}
+    peerDependencies:
+      vue: ^3.5.0
+
+  '@vueuse/metadata@13.4.0':
+    resolution: {integrity: sha512-CPDQ/IgOeWbqItg1c/pS+Ulum63MNbpJ4eecjFJqgD/JUCJ822zLfpw6M9HzSvL6wbzMieOtIAW/H8deQASKHg==}
+
+  '@vueuse/shared@13.4.0':
+    resolution: {integrity: sha512-+AxuKbw8R1gYy5T21V5yhadeNM7rJqb4cPaRI9DdGnnNl3uqXh+unvQ3uCaA2DjYLbNr1+l7ht/B4qEsRegX6A==}
+    peerDependencies:
+      vue: ^3.5.0
 
   acorn@8.15.0:
     resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
@@ -1088,8 +1133,8 @@ packages:
   resolve-pkg-maps@1.0.0:
     resolution: {integrity: sha512-seS2Tj26TBVOC2NIc2rOe2y2ZO7efxITtLZcGSOnHHNOQ7CkiUBfw0Iw2ck6xkIhPwLhKNLS8BO+hEpngQlqzw==}
 
-  rolldown-plugin-dts@0.13.11:
-    resolution: {integrity: sha512-1TScN31JImk8xcq9kdm52z2W8/QX3zeDpEjFkyZmK+GcD0u8QqSWWARBsCEdfS99NyI6D9NIbUpsABXlcpZhig==}
+  rolldown-plugin-dts@0.13.12:
+    resolution: {integrity: sha512-4QdQQfMOWNDLhmvoG3USAUpCm75dgwWk3IrK6SV9Fw2U5uwcSE7oQTqEcmsUGEBsNxZ58+gtM1oX38MMf0g5PA==}
     engines: {node: '>=20.18.0'}
     peerDependencies:
       '@typescript/native-preview': '>=7.0.0-dev.20250601.1'
@@ -1636,6 +1681,8 @@ snapshots:
     dependencies:
       undici-types: 7.8.0
 
+  '@types/web-bluetooth@0.0.21': {}
+
   '@unocss/astro@66.2.3(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(lightningcss@1.30.1)(yaml@2.8.0))(vue@3.5.17(typescript@5.8.3))':
     dependencies:
       '@unocss/core': 66.2.3
@@ -1880,6 +1927,19 @@ snapshots:
   '@vue/tsconfig@0.7.0(typescript@5.8.3)(vue@3.5.17(typescript@5.8.3))':
     optionalDependencies:
       typescript: 5.8.3
+      vue: 3.5.17(typescript@5.8.3)
+
+  '@vueuse/core@13.4.0(vue@3.5.17(typescript@5.8.3))':
+    dependencies:
+      '@types/web-bluetooth': 0.0.21
+      '@vueuse/metadata': 13.4.0
+      '@vueuse/shared': 13.4.0(vue@3.5.17(typescript@5.8.3))
+      vue: 3.5.17(typescript@5.8.3)
+
+  '@vueuse/metadata@13.4.0': {}
+
+  '@vueuse/shared@13.4.0(vue@3.5.17(typescript@5.8.3))':
+    dependencies:
       vue: 3.5.17(typescript@5.8.3)
 
   acorn@8.15.0: {}
@@ -2204,7 +2264,7 @@ snapshots:
 
   resolve-pkg-maps@1.0.0: {}
 
-  rolldown-plugin-dts@0.13.11(rolldown@1.0.0-beta.15)(typescript@5.8.3)(vue-tsc@2.2.10(typescript@5.8.3)):
+  rolldown-plugin-dts@0.13.12(rolldown@1.0.0-beta.15)(typescript@5.8.3)(vue-tsc@2.2.10(typescript@5.8.3)):
     dependencies:
       '@babel/generator': 7.27.5
       '@babel/parser': 7.27.5
@@ -2303,7 +2363,7 @@ snapshots:
       empathic: 1.1.0
       hookable: 5.5.3
       rolldown: 1.0.0-beta.15
-      rolldown-plugin-dts: 0.13.11(rolldown@1.0.0-beta.15)(typescript@5.8.3)(vue-tsc@2.2.10(typescript@5.8.3))
+      rolldown-plugin-dts: 0.13.12(rolldown@1.0.0-beta.15)(typescript@5.8.3)(vue-tsc@2.2.10(typescript@5.8.3))
       semver: 7.7.2
       tinyexec: 1.0.1
       tinyglobby: 0.2.14

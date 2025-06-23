@@ -3,18 +3,24 @@
   "version": "0.0.0",
   "type": "module",
   "description": "",
-  "main": "index.js",
+  "exports": {
+    ".": "./dist/index.mjs"
+  },
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch"
   },
+  "files": [
+    "dist"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.6.2",
   "devDependencies": {
-    "tsdown": "catalog:client",
     "unplugin-vue": "catalog:client"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@vueuse/core": "catalog:client"
+  }
 }

@@ -11,7 +11,7 @@
   "dependencies": {
     "@vitejs/plugin-vue": "catalog:play",
     "@vue/tsconfig": "catalog:play",
+    "devtools-vite": "workspace:^",
     "vue-tsc": "catalog:play"
-  },
-  "devDependencies": {}
+  }
 }

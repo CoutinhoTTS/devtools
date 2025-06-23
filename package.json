@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev:vite": "nr --filter ./packages/vite dev",
+    "dev:client": "nr --filter ./packages/client dev",
+    "turbo": "turbo run dev"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +25,8 @@
     "ansis": "catalog:dev",
     "exsolve": "catalog:dev",
     "lightningcss": "catalog:dev",
-    "tinyglobby": "catalog:dev"
+    "tinyglobby": "catalog:dev",
+    "tsdown": "catalog:dev",
+    "@unocss/reset": "catalog:dev"
   }
 }
