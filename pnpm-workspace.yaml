@@ -22,6 +22,7 @@ catalogs:
     '@vue/tsconfig': ^0.7.0
     vue-tsc: ^2.2.10
   client:
+    '@iconify/vue': ^5.0.0
     '@vueuse/core': ^13.4.0
     unplugin-vue: ^6.2.0
   vite:

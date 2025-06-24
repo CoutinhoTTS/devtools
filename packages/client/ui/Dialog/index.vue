@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { getCurrentInstance } from "vue";
-const props = defineProps<{ isVertical: boolean }>({
-  isVertical: false,
+import Logo from "./../Logo/idnex.vue";
+import { Icon } from "@iconify/vue";
+const props = defineProps({
+  isVertical: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const H_STYLE = {
@@ -98,21 +102,79 @@ const resizeList = [
     },
   },
 ];
-console.log("dialog", getCurrentInstance());
+const menuConfig = {
+  page: [
+    {
+      name: "页面",
+      icon: "qlementine-icons:page-setup-16",
+    },
+    {
+      name: "应用",
+      icon: "streamline-logos:microsoft-windows-logo-3",
+    },
+    {
+      name: "服务",
+      icon: "fluent:app-title-24-regular",
+    },
+  ],
+  auth: [
+    {
+      name: "角色",
+      icon: "carbon:user-role",
+    },
+    {
+      name: "用户",
+      icon: "la:user-solid",
+    },
+  ],
+  ai: [
+    {
+      name: "ai",
+      icon: "ri:anthropic-line",
+    },
+  ],
+};
 </script>
 <template>
   <div
     :isVertical="props.isVertical"
-    class="b-1 border-base w-[300px] h-[300px] b-rd-10px pos-absolute top-[-290px] bg-#fff"
+    class="b-1 border-base b-rd-10px absolute bg-#fff"
   >
+    <div class="absolute inset-0 overflow-hidden b-rd-10px">
+      <div
+        class="left-menu w-50px b-r-1 border-base h-full flex flex-col justify-start items-center"
+      >
+        <div
+          class="devtools-logo w-full h-50px flex justify-center items-center b-b-1 border-base"
+        >
+          <div
+            class="w-40px h-40px font-size-40px cursor-pointer b-rd-5px hover:bg-gray-100/70 hover:color-[var(--el-color-primary,#007fff)] transition-colors duration-300"
+          >
+            <Logo></Logo>
+          </div>
+        </div>
+        <div class="w-full h-[calc(100% - 50px)] overflow-hidden flex flex-col justify-start items-center">
+          <div
+            v-for="(types, key) in menuConfig"
+            :key="key"
+            class="menu-config flex flex-col justify-start items-center gap-10px py-10px px-2px w-max b-b-1 border-base"
+          >
+            <div
+              v-for="item in types"
+              :key="item.name"
+              class="w-35px h-35px font-size-23px flex justify-center items-center cursor-pointer b-rd-5px hover:bg-gray-100/70 transition-colors duration-300"
+            >
+              <Icon :icon="item.icon"></Icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div
       v-for="item in resizeList"
       :style="{ ...item.style }"
-      class="pos-absolute hover-bg-gray-200/70 transition-colors"
+      class="absolute hover-bg-gray-200/70 transition-colors"
       :key="item.name"
     ></div>
-    <div>
-      {{ props.isVertical }}
-    </div>
   </div>
 </template>

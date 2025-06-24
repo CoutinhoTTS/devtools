@@ -5,7 +5,8 @@ import Logo from "./Logo/idnex.vue";
 import DiaLog from "./Dialog/index.vue";
 const panel = ref<HTMLElement | undefined>();
 const pushpin = ref<HTMLElement | undefined>();
-const { onPointerDown, anchorStyle, isVertical } = usePosition(pushpin);
+const { onPointerDown, anchorStyle, isVertical, dialogStyle } =
+  usePosition(pushpin);
 </script>
 <template>
   <div
@@ -20,6 +21,6 @@ const { onPointerDown, anchorStyle, isVertical } = usePosition(pushpin);
     >
       <Logo class="font-size-[1.4rem]" />
     </div>
-    <DiaLog :isVertical="isVertical"></DiaLog>
+    <DiaLog :style="dialogStyle" :isVertical="isVertical"></DiaLog>
   </div>
 </template>

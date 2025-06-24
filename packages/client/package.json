@@ -21,6 +21,7 @@
     "unplugin-vue": "catalog:client"
   },
   "dependencies": {
-    "@vueuse/core": "catalog:client"
+    "@vueuse/core": "catalog:client",
+    "@iconify/vue": "catalog:client"
   }
 }

@@ -1,6 +1,7 @@
 import type { Ref } from "vue";
-import { ref, reactive, watchEffect, computed } from "vue";
+import { ref, reactive, watchEffect, computed, watch, onMounted } from "vue";
 import clamp from "./clamp";
+import { setSelectNone, removeSelectNone } from "./userSelect";
 import {
   useWindowSize,
   useScreenSafeArea,
@@ -17,18 +18,26 @@ interface DevToolsFrameState {
   open: boolean;
   position: string;
   isFirstVisit: boolean;
+  dialogTop: number;
+  dialogLeft: number;
+  dialogWidth: number;
+  dialogHeight: number;
 }
 
 const state = useLocalStorage<DevToolsFrameState>(
   "__funi-devtools-frame-state__",
   {
-    width: 80,
-    height: 60,
     top: 0,
     left: 50,
+    width: 0,
+    height: 0,
     open: false,
     position: "bottom",
     isFirstVisit: true,
+    dialogTop: 0,
+    dialogLeft: 0,
+    dialogWidth: 0,
+    dialogHeight: 0,
   }
 );
 function updateState(value: Partial<DevToolsFrameState>) {
@@ -64,6 +73,10 @@ export default function (panelEl: Ref<HTMLElement | undefined>) {
     panelMargins.right = pixelToNumber(safeArea.right.value) + 10;
     panelMargins.bottom = pixelToNumber(safeArea.bottom.value) + 10;
   });
+  watch(isDragging, (value) => {
+    if (value) setSelectNone();
+    else removeSelectNone();
+  });
 
   const onPointerDown = (e: PointerEvent) => {
     isDragging.value = true;
@@ -72,7 +85,6 @@ export default function (panelEl: Ref<HTMLElement | undefined>) {
     draggingOffset.y = e.clientY - top - height / 2;
   };
   const isVertical = computed(() => {
-    console.log(state)
     return state.value.position === "left" || state.value.position === "right";
   });
   useEventListener("pointerup", () => {
@@ -87,11 +99,6 @@ export default function (panelEl: Ref<HTMLElement | undefined>) {
     const centerY = windowHeight.value / 2;
     const x = e.clientX - draggingOffset.x;
     const y = e.clientY - draggingOffset.y;
-
-    // mousePosition.x = x;
-    // mousePosition.y = y;
-
-    // Get position
     const deg = Math.atan2(y - centerY, x - centerX);
     const HORIZONTAL_MARGIN = 70;
     const TL = Math.atan2(0 - centerY + HORIZONTAL_MARGIN, 0 - centerX);
@@ -107,7 +114,6 @@ export default function (panelEl: Ref<HTMLElement | undefined>) {
       windowHeight.value - HORIZONTAL_MARGIN - centerY,
       windowWidth.value - centerX
     );
-
     updateState({
       position:
         deg >= TL && deg <= TR
@@ -119,6 +125,18 @@ export default function (panelEl: Ref<HTMLElement | undefined>) {
           : "left",
       left: snapToPoints((x / windowWidth.value) * 100),
       top: snapToPoints((y / windowHeight.value) * 100),
+    });
+  });
+
+  onMounted(() => {
+    updateState({
+      width: panelEl?.value?.offsetWidth ?? 0,
+      height: panelEl?.value?.offsetHeight ?? 0,
+    });
+    useEventListener(panelEl, "click", (e) => {
+      updateState({
+        open: !state.value.open,
+      });
     });
   });
 
@@ -174,10 +192,53 @@ export default function (panelEl: Ref<HTMLElement | undefined>) {
     };
   });
 
+  const dialogStyle = computed(() => {
+    let {
+      open,
+      isFirstVisit,
+      dialogTop,
+      dialogLeft,
+      dialogHeight,
+      dialogWidth,
+      width,
+      height,
+    } = state.value;
+    if (open && isFirstVisit) {
+      if (!isVertical.value) {
+        dialogHeight = windowHeight.value * 0.6;
+        dialogWidth = windowWidth.value * 0.8;
+        dialogTop = -dialogHeight + 10;
+        dialogLeft = width / 2 - dialogWidth / 2;
+      } else {
+        dialogHeight = windowHeight.value * 0.8;
+        dialogWidth = windowWidth.value * 0.6;
+        dialogTop = height / 2 - dialogHeight / 2;
+        dialogLeft = -windowWidth + 10;
+      }
+
+      updateState({
+        isFirstVisit: false,
+        dialogTop,
+        dialogLeft,
+        dialogHeight,
+        dialogWidth,
+      });
+    }
+ 
+    return {
+      display: open ? "block" : "none",
+      top: `${dialogTop}px`,
+      left: `${dialogLeft}px`,
+      height: `${dialogHeight}px`,
+      width: `${dialogWidth}px`,
+    };
+  });
+
   return {
     panelMargins,
     onPointerDown,
     anchorStyle,
     isVertical,
+    dialogStyle,
   };
 }

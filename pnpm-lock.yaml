@@ -6,6 +6,9 @@ settings:
 
 catalogs:
   client:
+    '@iconify/vue':
+      specifier: ^5.0.0
+      version: 5.0.0
     '@vueuse/core':
       specifier: ^13.4.0
       version: 13.4.0
@@ -115,6 +118,9 @@ importers:
 
   packages/client:
     dependencies:
+      '@iconify/vue':
+        specifier: catalog:client
+        version: 5.0.0(vue@3.5.17(typescript@5.8.3))
       '@vueuse/core':
         specifier: catalog:client
         version: 13.4.0(vue@3.5.17(typescript@5.8.3))
@@ -358,6 +364,11 @@ packages:
 
   '@iconify/utils@2.3.0':
     resolution: {integrity: sha512-GmQ78prtwYW6EtzXRU1rY+KwOKfz32PD7iJh6Iyqw68GiKuoZ2A6pRtzWONz5VQJbp50mEjXh/7NkumtrAgRKA==}
+
+  '@iconify/vue@5.0.0':
+    resolution: {integrity: sha512-C+KuEWIF5nSBrobFJhT//JS87OZ++QDORB6f2q2Wm6fl2mueSTpFBeBsveK0KW9hWiZ4mNiPjsh6Zs4jjdROSg==}
+    peerDependencies:
+      vue: '>=3'
 
   '@jridgewell/gen-mapping@0.3.8':
     resolution: {integrity: sha512-imAbBGkb+ebQyxKgzv5Hu2nmROxoDOXHh80evxdoXNOrvAnVx7zimzc1Oo5h9RlfV4vPXaE2iM5pOFbvOCClWA==}
@@ -1535,6 +1546,11 @@ snapshots:
       mlly: 1.7.4
     transitivePeerDependencies:
       - supports-color
+
+  '@iconify/vue@5.0.0(vue@3.5.17(typescript@5.8.3))':
+    dependencies:
+      '@iconify/types': 2.0.0
+      vue: 3.5.17(typescript@5.8.3)
 
   '@jridgewell/gen-mapping@0.3.8':
     dependencies:
