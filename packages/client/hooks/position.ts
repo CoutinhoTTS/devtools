@@ -2,6 +2,7 @@ import type { Ref } from "vue";
 import { ref, reactive, watchEffect, computed, watch, onMounted } from "vue";
 import clamp from "./clamp";
 import { setSelectNone, removeSelectNone } from "./userSelect";
+import DiaLog from "./../ui/Dialog/index.vue";
 import {
   useWindowSize,
   useScreenSafeArea,
@@ -10,7 +11,7 @@ import {
 } from "@vueuse/core";
 import pixelToNumber from "./pixelToNumber";
 
-interface DevToolsFrameState {
+export interface DevToolsFrameState {
   width: number;
   height: number;
   top: number;
@@ -56,7 +57,10 @@ function snapToPoints(value: number) {
   return value;
 }
 
-export default function (panelEl: Ref<HTMLElement | undefined>) {
+export default function (
+  pushpin: Ref<HTMLElement | undefined>,
+  dialog: Ref<InstanceType<typeof DiaLog> | undefined>
+) {
   const { width: windowWidth, height: windowHeight } = useWindowSize();
   const isDragging = ref(false);
   const draggingOffset = reactive({ x: 0, y: 0 });
@@ -80,7 +84,7 @@ export default function (panelEl: Ref<HTMLElement | undefined>) {
 
   const onPointerDown = (e: PointerEvent) => {
     isDragging.value = true;
-    const { left, top, width, height } = panelEl.value!.getBoundingClientRect();
+    const { left, top, width, height } = pushpin.value!.getBoundingClientRect();
     draggingOffset.x = e.clientX - left - width / 2;
     draggingOffset.y = e.clientY - top - height / 2;
   };
@@ -130,10 +134,10 @@ export default function (panelEl: Ref<HTMLElement | undefined>) {
 
   onMounted(() => {
     updateState({
-      width: panelEl?.value?.offsetWidth ?? 0,
-      height: panelEl?.value?.offsetHeight ?? 0,
+      width: pushpin?.value?.offsetWidth ?? 0,
+      height: pushpin?.value?.offsetHeight ?? 0,
     });
-    useEventListener(panelEl, "click", (e) => {
+    useEventListener(pushpin, "click", (e) => {
       updateState({
         open: !state.value.open,
       });
@@ -141,8 +145,8 @@ export default function (panelEl: Ref<HTMLElement | undefined>) {
   });
 
   const anchorPos = computed(() => {
-    const halfWidth = panelEl.value?.clientWidth || 0;
-    const halfHeight = panelEl.value?.clientHeight || 0;
+    const halfWidth = pushpin.value?.clientWidth || 0;
+    const halfHeight = pushpin.value?.clientHeight || 0;
     const left = (state.value.left * windowWidth.value) / 100;
     const top = (state.value.top * windowHeight.value) / 100;
     switch (state.value.position) {
@@ -202,18 +206,21 @@ export default function (panelEl: Ref<HTMLElement | undefined>) {
       dialogWidth,
       width,
       height,
+      position,
+      left,
+      top
     } = state.value;
     if (open && isFirstVisit) {
       if (!isVertical.value) {
         dialogHeight = windowHeight.value * 0.6;
         dialogWidth = windowWidth.value * 0.8;
-        dialogTop = -dialogHeight + 10;
+        dialogTop = -dialogHeight + 13;
         dialogLeft = width / 2 - dialogWidth / 2;
       } else {
         dialogHeight = windowHeight.value * 0.8;
         dialogWidth = windowWidth.value * 0.6;
         dialogTop = height / 2 - dialogHeight / 2;
-        dialogLeft = -windowWidth + 10;
+        dialogLeft = -windowWidth + 13;
       }
 
       updateState({
@@ -224,13 +231,35 @@ export default function (panelEl: Ref<HTMLElement | undefined>) {
         dialogWidth,
       });
     }
- 
+    const dialogDom = dialog.value?.dialog;
+    if (open && dialogDom) {
+      const {
+        left: dialogRectLeft,
+        top: dialogRectTop,
+        width: dialogRectWidth,
+        height: dialogRectHeight,
+      } = dialogDom.getBoundingClientRect();
+      if (
+        dialogRectLeft <= panelMargins.left + 13 &&
+        ["bottom", "top"].includes(position)
+      ) {
+        updateState({
+          // dialogLeft: left+,
+        });
+      }
+      if (
+        dialogRectLeft >= windowWidth.value - panelMargins.left - 13 &&
+        ["bottom", "top"].includes(position)
+      ) {
+      }
+    }
+
     return {
       display: open ? "block" : "none",
-      top: `${dialogTop}px`,
-      left: `${dialogLeft}px`,
-      height: `${dialogHeight}px`,
-      width: `${dialogWidth}px`,
+      top: `${state.value.dialogTop}px`,
+      left: `${state.value.dialogLeft}px`,
+      height: `${state.value.dialogHeight}px`,
+      width: `${state.value.dialogWidth}px`,
     };
   });
 
@@ -240,5 +269,6 @@ export default function (panelEl: Ref<HTMLElement | undefined>) {
     anchorStyle,
     isVertical,
     dialogStyle,
+    state,
   };
 }
